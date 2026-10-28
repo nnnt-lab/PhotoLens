@@ -1,0 +1,19 @@
+
+gradle.beforeProject { project ->
+ project.plugins.withId('com.android.application') {
+  project.android.testOptions.unitTests.includeAndroidResources = true
+  project.android.sourceSets.test.java.srcDir(project.rootProject.file('tests/android'))
+  project.dependencies.add('testImplementation','junit:junit:4.13.2')
+  project.dependencies.add('testImplementation','org.robolectric:robolectric:4.17')
+  project.tasks.withType(org.gradle.api.tasks.testing.Test).configureEach {
+   def home = project.rootProject.file('build/android-test-home')
+   def tmp = project.rootProject.file('build/android-test-tmp')
+   doFirst { home.mkdirs(); tmp.mkdirs() }
+   systemProperty 'user.home',home.absolutePath
+   systemProperty 'java.io.tmpdir',tmp.absolutePath
+   systemProperty 'robolectric.dependency.repo.url','https://repo.maven.apache.org/maven2'
+   jvmArgs '--add-opens=java.base/java.lang=ALL-UNNAMED','--add-opens=java.base/java.util=ALL-UNNAMED','--add-opens=java.base/java.io=ALL-UNNAMED','--add-opens=java.base/java.net=ALL-UNNAMED','--add-opens=java.base/java.security=ALL-UNNAMED','--add-opens=java.base/java.text=ALL-UNNAMED','--add-opens=java.base/jdk.internal.access=ALL-UNNAMED'
+   testLogging { events 'passed','failed'; exceptionFormat 'full' }
+  }
+ }
+}

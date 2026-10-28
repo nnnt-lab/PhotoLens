@@ -1,0 +1,3 @@
+# Подтверждённые выводы
+- 2026-10-28. Контекст: ImageDecoder в legacy graphics Robolectric возвращает null decoder. Правило: для тестов PhotoLoader на Android 13 использовать @GraphicsMode(NATIVE), сохраняя реальный ImageDecoder приложения. Подтверждение: тесты чтения PNG, прозрачности и уменьшения фото проходят в PhotoLoaderTest.
+- 2026-10-28. Контекст: при ручном запуске Activity в Robolectric клиент ML Kit создаётся до стандартной SDK auto-init. Правило: в тестовой фикстуре выполнить attachInfo для MlKitInitProvider; в приложении использовать обычную инициализацию через provider в merged manifest. Подтверждение: MainScreenTest создаёт настоящий клиент ML Kit и проверяет открытие ACTION_OPEN_DOCUMENT. Этот тест не проверяет native inference модели.
